@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Editor</title>
+    <style>
+        /* CSS for styling the editor */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Code Editor</h1>
+    <textarea id="code" placeholder="Enter your code here..."></textarea>
+    <button onclick="submitCode()">Submit Code</button>
+    <div id="output"></div>
+</div>
+
+<script>
+    // JavaScript for handling code submission and response
+    function submitCode() {
+        const code = document.getElementById('code').value;
+        fetch('/api/submit-code', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ code })
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('output').innerText = data.message;
+            })
+            .catch(error => {
+                console.error('Error submitting code:', error);
+                document.getElementById('output').innerText = 'An error occurred while submitting code.';
+            });
+    }
+</script>
+</body>
+</html>
